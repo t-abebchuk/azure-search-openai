@@ -119,7 +119,7 @@ Thought: {agent_scratchpad}"""
         tools = [acs_tool]
 
         prompt = ZeroShotAgent.create_prompt(
-            tools=[acs_tool],
+            tools=tools,
             prefix=overrides.get("prompt_template_prefix") or self.template_prefix,
             suffix=overrides.get("prompt_template_suffix") or self.template_suffix,
             input_variables = ["input", "agent_scratchpad"])
@@ -127,7 +127,7 @@ Thought: {agent_scratchpad}"""
         chain = LLMChain(llm = llm, prompt = prompt)
         agent_exec = AgentExecutor.from_agent_and_tools(
             agent = ZeroShotAgent(llm_chain = chain),
-            tools = [acs_tool],
+            tools = tools,
             verbose = True,
             callback_manager = cb_manager)
         result = await agent_exec.arun(q)
